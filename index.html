@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kick Player</title>
+    </head>
+    <body>
+        <input id="usernameBox" type="text">
+        <button id="kickBtn">Kick</button>
+        <p id="statusLabel" hidden></p>
+
+        <script>
+            const URL = '/kickRequest';
+            const OK_RESPONSE = 200;
+
+            const usernameBox = document.getElementById('usernameBox');
+            const kickBtn = document.getElementById('kickBtn');
+            const statusLabel = document.getElementById('statusLabel');
+
+            async function sendKickRequest() {
+                const response = await fetch(URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: usernameBox.value
+                    })
+                });
+
+                statusLabel.hidden = false;
+                if (response.status == OK_RESPONSE) {
+                    statusLabel.innerText = `Successfully kicked ${usernameBox.value}.`
+                } else {
+                    statusLabel.innerText = `Failed to kick ${usernameBox.value}.`
+                }
+            }
+
+            kickBtn.onclick = sendKickRequest;
+        </script>
+    </body>
+</html>
